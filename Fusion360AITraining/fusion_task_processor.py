@@ -171,17 +171,21 @@ class TaskProcessor:
             self.log(f"Error processing task: {str(e)}")
         
         finally:
-            # Keep model on screen - don't auto-close
-            # User can manually close when done inspecting
-            self.log("Model ready for inspection - NOT auto-closing")
+            # Check if task should stay open for inspection
+            keep_open = task.get('keep_open', False)
             
-            # Optional: Uncomment to auto-close after delay
-            # start_pause = time.time()
-            # while time.time() - start_pause < 4:
-            #     adsk.doEvents()
-            #     time.sleep(0.1)
-            # if 'doc' in locals() and doc:
-            #     doc.close(False)
+            if keep_open:
+                self.log("Model kept on screen for inspection (keep_open=true)")
+            else:
+                # Auto-close after brief pause
+                self.log("Auto-closing in 4 seconds...")
+                start_pause = time.time()
+                while time.time() - start_pause < 4:
+                    adsk.doEvents()
+                    time.sleep(0.1)
+                
+                if 'doc' in locals() and doc:
+                    doc.close(False)
     
     def execute_operation(self, operation):
         """Execute a single CAD operation"""

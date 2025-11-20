@@ -82,6 +82,7 @@ def create_gear_train_assembly():
         'description': f'Gear train with {len(correct_joints)} joints (auto-detected {len(compatible)} compatible connections)',
         'operations': operations,
         'export_formats': ['f3d'],
+        'keep_open': True,  # Keep on screen for inspection
         'timestamp': '2025-11-20T01:36:00'
     }
     
