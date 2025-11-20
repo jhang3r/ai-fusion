@@ -251,7 +251,10 @@ class TaskProcessor:
             plane = planes.add(plane_input)
             self.log(f"Created offset plane from {plane_name} at {offset*10}mm")
         
+        # Debug: Log which component we're working in
+        self.log(f"Creating sketch in component: {self.root_comp.name}")
         sketch = self.root_comp.sketches.add(plane)
+        self.log(f"Sketch created, ID: {sketch.name}")
         
         # Handle construction geometry
         construction_ops = operation.get('construction_geometry', [])
@@ -762,6 +765,9 @@ class TaskProcessor:
         """Create an extrusion"""
         sketch = self.root_comp.sketches[-1]
         
+        # Debug: Log component context
+        self.log(f"Extruding in component: {self.root_comp.name}")
+        
         # Convert mm to cm
         distance = float(operation.get('distance', 10.0)) / 10.0
         
@@ -797,7 +803,11 @@ class TaskProcessor:
         distance_value = adsk.core.ValueInput.createByReal(distance)
         ext_input.setDistanceExtent(False, distance_value)
         
-        extrudes.add(ext_input)
+        extrude_feature = extrudes.add(ext_input)
+        
+        # Debug: Check if bodies were created
+        body_count = self.root_comp.bRepBodies.count
+        self.log(f"Extrude complete. Component now has {body_count} bodies")
     
     def create_revolve(self, operation):
         """Create a revolve feature"""
