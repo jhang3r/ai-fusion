@@ -1,0 +1,81 @@
+{
+    "task_id": "test_multi_geometry",
+    "type": "create_part",
+    "description": "Test multi-geometry sketch with 4 circles",
+    "operations": [
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "geometry": "rectangle",
+            "params": {
+                "width": 100,
+                "height": 80,
+                "center": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "type": "extrude",
+            "distance": 10
+        },
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "offset": 10,
+            "geometry": "multi",
+            "items": [
+                {
+                    "type": "circle",
+                    "params": {
+                        "radius": 4,
+                        "center": [
+                            15,
+                            15
+                        ]
+                    }
+                },
+                {
+                    "type": "circle",
+                    "params": {
+                        "radius": 4,
+                        "center": [
+                            85,
+                            15
+                        ]
+                    }
+                },
+                {
+                    "type": "circle",
+                    "params": {
+                        "radius": 4,
+                        "center": [
+                            15,
+                            65
+                        ]
+                    }
+                },
+                {
+                    "type": "circle",
+                    "params": {
+                        "radius": 4,
+                        "center": [
+                            85,
+                            65
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "type": "extrude",
+            "distance": -15,
+            "operation": "cut"
+        }
+    ],
+    "export_formats": [
+        "stl"
+    ],
+    "timestamp": "2025-11-20T00:21:00"
+}

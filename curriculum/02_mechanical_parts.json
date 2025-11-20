@@ -1,0 +1,49 @@
+{
+    "level": 2,
+    "name": "Mechanical Components",
+    "description": "Create functional mechanical parts with multiple operations and precise tolerances",
+    "tasks": [
+        {
+            "type": "gear",
+            "description": "Create spur gears with varying tooth counts and modules",
+            "iterations": 8,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 85,
+                "dimensional_accuracy": 97
+            }
+        },
+        {
+            "type": "bolt",
+            "description": "Create bolts with heads and threaded shafts",
+            "iterations": 6,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 85,
+                "dimensional_accuracy": 95
+            }
+        },
+        {
+            "type": "bearing_housing",
+            "description": "Create bearing housings with precise bore dimensions",
+            "iterations": 5,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 80,
+                "dimensional_accuracy": 98
+            }
+        }
+    ],
+    "learning_objectives": [
+        "Master multi-operation workflows",
+        "Understand parametric relationships",
+        "Achieve high dimensional accuracy (< 3% deviation)",
+        "Learn hole and pattern operations",
+        "Apply fillets and chamfers appropriately"
+    ],
+    "completion_requirements": {
+        "min_avg_score": 85,
+        "min_tasks_completed": 15,
+        "prerequisite_level": 1
+    }
+}

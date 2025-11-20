@@ -1,0 +1,12 @@
+# External Python dependencies for the training orchestrator
+# Note: Fusion 360 script uses bundled Python and cannot use these
+
+# Core dependencies
+numpy>=1.24.0
+trimesh>=4.0.0  # For STL mesh analysis
+pillow>=10.0.0  # For image comparison
+scipy>=1.11.0   # For numerical analysis and Hausdorff distance
+
+# Optional but recommended
+matplotlib>=3.7.0  # For visualization
+tqdm>=4.66.0      # For progress bars

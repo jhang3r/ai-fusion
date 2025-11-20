@@ -1,0 +1,85 @@
+{
+    "task_id": "test_holes_fixed",
+    "type": "create_part",
+    "description": "Test multiple holes in single sketch",
+    "operations": [
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "geometry": "rectangle",
+            "params": {
+                "width": 100,
+                "height": 80,
+                "center": [
+                    0,
+                    0
+                ]
+            }
+        },
+        {
+            "type": "extrude",
+            "distance": 10
+        },
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "offset": 10,
+            "geometry": "circle",
+            "params": {
+                "radius": 4,
+                "center": [
+                    25,
+                    20
+                ]
+            }
+        },
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "offset": 10,
+            "geometry": "circle",
+            "params": {
+                "radius": 4,
+                "center": [
+                    75,
+                    20
+                ]
+            }
+        },
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "offset": 10,
+            "geometry": "circle",
+            "params": {
+                "radius": 4,
+                "center": [
+                    25,
+                    60
+                ]
+            }
+        },
+        {
+            "type": "sketch",
+            "plane": "XY",
+            "offset": 10,
+            "geometry": "circle",
+            "params": {
+                "radius": 4,
+                "center": [
+                    75,
+                    60
+                ]
+            }
+        },
+        {
+            "type": "extrude",
+            "distance": -15,
+            "operation": "cut"
+        }
+    ],
+    "export_formats": [
+        "stl"
+    ],
+    "timestamp": "2025-11-19T23:45:00"
+}

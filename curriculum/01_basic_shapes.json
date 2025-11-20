@@ -1,0 +1,47 @@
+{
+  "level": 1,
+  "name": "Basic Shapes",
+  "description": "Learn fundamental sketch and extrude operations with simple geometric shapes",
+  "tasks": [
+    {
+      "type": "simple_cylinder",
+      "description": "Create cylinders with varying dimensions",
+      "iterations": 5,
+      "difficulty_progression": true,
+      "success_criteria": {
+        "min_score": 80,
+        "dimensional_accuracy": 95
+      }
+    },
+    {
+      "type": "simple_box",
+      "description": "Create rectangular boxes with precise dimensions",
+      "iterations": 5,
+      "difficulty_progression": true,
+      "success_criteria": {
+        "min_score": 80,
+        "dimensional_accuracy": 95
+      }
+    },
+    {
+      "type": "sphere",
+      "description": "Create spheres using revolve operations",
+      "iterations": 3,
+      "difficulty_progression": false,
+      "success_criteria": {
+        "min_score": 75,
+        "dimensional_accuracy": 90
+      }
+    }
+  ],
+  "learning_objectives": [
+    "Understand sketch plane selection",
+    "Master basic sketch geometry (circles, rectangles)",
+    "Learn extrude and revolve operations",
+    "Achieve dimensional accuracy within 5%"
+  ],
+  "completion_requirements": {
+    "min_avg_score": 80,
+    "min_tasks_completed": 10
+  }
+}

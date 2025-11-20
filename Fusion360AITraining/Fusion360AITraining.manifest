@@ -1,0 +1,13 @@
+{
+    "autodeskProduct": "Fusion360",
+    "type": "script",
+    "id": "fusion360_ai_training",
+    "author": "AI Training System",
+    "description": {
+        "": "Fusion 360 AI Training Interface - Monitors for design tasks and executes CAD operations"
+    },
+    "version": "1.0.0",
+    "runOnStartup": false,
+    "supportedOS": "windows|mac",
+    "editEnabled": true
+}

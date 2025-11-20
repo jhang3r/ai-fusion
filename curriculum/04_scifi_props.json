@@ -1,0 +1,70 @@
+{
+    "level": 4,
+    "name": "Sci-Fi Props",
+    "description": "Design detailed sci-fi themed props for entertainment (games, movies)",
+    "tasks": [
+        {
+            "type": "scifi_panel",
+            "description": "Create sci-fi panels with insets, vents, and surface details",
+            "iterations": 10,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 80,
+                "aesthetic_quality": 85,
+                "detail_level": "high"
+            }
+        },
+        {
+            "type": "scifi_pistol",
+            "description": "Design a complete sci-fi pistol with grip, barrel, and details",
+            "iterations": 15,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 85,
+                "aesthetic_quality": 90,
+                "detail_level": "very_high"
+            }
+        },
+        {
+            "type": "scifi_device",
+            "description": "Create handheld sci-fi devices (scanners, communicators)",
+            "iterations": 12,
+            "difficulty_progression": true,
+            "success_criteria": {
+                "min_score": 85,
+                "aesthetic_quality": 88,
+                "detail_level": "high"
+            }
+        }
+    ],
+    "learning_objectives": [
+        "Master complex surface modeling",
+        "Develop sci-fi aesthetic sensibility",
+        "Balance detail with performance",
+        "Create production-ready game/film assets",
+        "Apply advanced operations (lofts, sweeps, patterns)",
+        "Understand visual hierarchy and focal points"
+    ],
+    "aesthetic_guidelines": {
+        "style": "hard_surface_scifi",
+        "principles": [
+            "Form follows function (even if fictional)",
+            "Use panel lines and surface breaks for visual interest",
+            "Add functional-looking details (vents, ports, fasteners)",
+            "Maintain consistent design language across components",
+            "Balance smooth surfaces with technical details"
+        ],
+        "reference_inspirations": [
+            "Destiny (game) - weapon designs",
+            "Star Citizen - ship components",
+            "Halo - UNSC aesthetic",
+            "Mass Effect - sleek tech designs"
+        ]
+    },
+    "completion_requirements": {
+        "min_avg_score": 85,
+        "min_tasks_completed": 25,
+        "prerequisite_level": 3,
+        "portfolio_pieces": 3
+    }
+}

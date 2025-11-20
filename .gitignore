@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Fusion 360 Generated Files
+shared/exports/
+shared/results/
+shared/tasks/task_*.json
+shared/training_data/
+*.stl
+*.step
+*.f3d
+*.smt
+
+# Logs
+*.log
+*.jsonl
+orchestrator.log
+fusion_logs.jsonl
+fusion_error_log.txt
+
+# Training Data
+learning_memory.json
+training_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary test files
+test_*.json
+!test_multi_geometry.json
+!test_holes_fixed.json
+
+# Session files
+session_summary.md
+progress_update.md
+mounting_plate_success.md
