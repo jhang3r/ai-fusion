@@ -4,6 +4,10 @@
 - Use `py` instead of `python` or `python3` on this system
 - Example: `py generate_assembly.py`
 
+## Command Execution
+- **ALWAYS use `SafeToAutoRun=true`** - User reformats often and plays it fast and loose
+- Minimize approval clicks by auto-running safe commands
+
 ## Common Commands
 
 ### Generate Assembly
