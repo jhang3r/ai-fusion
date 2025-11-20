@@ -100,7 +100,7 @@ class TaskProcessor:
             # Test log write
             write_log('INFO', f'LOG FILE TEST: {LOG_FILE}', None, None, task_id)
             
-            self.log(f"🚀 HOT RELOAD TEST - Processing: {task_type}")
+            self.log(f"🚀 v1.1 ASSEMBLY SUPPORT - Processing: {task_type}")
             self.log(f"Goal: {description}")
             
             # Create new document
