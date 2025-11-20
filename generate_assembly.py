@@ -7,55 +7,81 @@ from design_primitives import DesignPrimitives, ConnectionPoint
 import json
 from pathlib import Path
 
+def find_compatible_connections(components_data):
+    """Find compatible connection points between components"""
+    compatible_pairs = []
+    
+    for i, (name1, data1) in enumerate(components_data):
+        for j, (name2, data2) in enumerate(components_data):
+            if i >= j:  # Skip self and already checked pairs
+                continue
+            
+            cp1_list = data1.get('connection_points', [])
+            cp2_list = data2.get('connection_points', [])
+            
+            for cp1 in cp1_list:
+                for cp2 in cp2_list:
+                    if cp1.can_mate_with(cp2):
+                        compatible_pairs.append({
+                            'component_1': name1,
+                            'component_2': name2,
+                            'cp1': cp1,
+                            'cp2': cp2,
+                            'joint_type': 'revolute' if cp1.type in ['shaft', 'bore'] else 'rigid'
+                        })
+    
+    return compatible_pairs
+
 def create_gear_train_assembly():
     """Generate a 2-gear train assembly using connection points"""
     
     # Generate components with connection points
-    shaft1_data = DesignPrimitives.shaft(diameter=8, length=30)
-    gear1_data = DesignPrimitives.gear(teeth=20, module=2, thickness=10, bore_diameter=8)
-    gear2_data = DesignPrimitives.gear(teeth=30, module=2, thickness=10, bore_diameter=8)
-    shaft2_data = DesignPrimitives.shaft(diameter=8, length=30)
+    components_data = [
+        ('Shaft1', DesignPrimitives.shaft(diameter=8, length=30)),
+        ('Gear1', DesignPrimitives.gear(teeth=20, module=2, thickness=10, bore_diameter=8)),
+        ('Shaft2', DesignPrimitives.shaft(diameter=8, length=30)),
+        ('Gear2', DesignPrimitives.gear(teeth=30, module=2, thickness=10, bore_diameter=8))
+    ]
+    
+    # Find compatible connections
+    compatible = find_compatible_connections(components_data)
     
     # Build assembly task
     operations = []
     
-    # Shaft 1
-    operations.append({'type': 'create_component', 'name': 'Shaft1'})
-    operations.extend(shaft1_data['operations'])
+    # Create all components
+    for name, data in components_data:
+        operations.append({'type': 'create_component', 'name': name})
+        operations.extend(data['operations'])
     
-    # Gear 1 on Shaft 1
-    operations.append({'type': 'create_component', 'name': 'Gear1'})
-    operations.extend(gear1_data['operations'])
-    
-    # Shaft 2 (offset for meshing gears)
-    operations.append({'type': 'create_component', 'name': 'Shaft2'})
-    operations.extend(shaft2_data['operations'])
-    pitch_distance = 2 * (20 + 30) / 2  # Pitch diameter calculation
+    # Position Shaft2 for gear meshing
+    pitch_distance = 2 * (20 + 30) / 2
     operations.append({'type': 'transform_component', 'name': 'Shaft2', 'offset': [pitch_distance, 0, 0]})
     
-    # Gear 2 on Shaft 2
-    operations.append({'type': 'create_component', 'name': 'Gear2'})
-    operations.extend(gear2_data['operations'])
-    
-    # Create joints using connection points
+    # Create joints from compatible connections
     operations.append({'type': 'activate_component', 'name': 'root'})
-    operations.append({'type': 'create_joint', 'component_1': 'Gear1', 'component_2': 'Shaft1', 'joint_type': 'revolute'})
-    operations.append({'type': 'create_joint', 'component_1': 'Gear2', 'component_2': 'Shaft2', 'joint_type': 'revolute'})
+    for pair in compatible:
+        operations.append({
+            'type': 'create_joint',
+            'component_1': pair['component_1'],
+            'component_2': pair['component_2'],
+            'joint_type': pair['joint_type']
+        })
     
     task = {
         'task_id': 'gear_train_auto',
         'type': 'create_assembly',
-        'description': 'Auto-generated gear train from connection points',
+        'description': f'Auto-generated gear train ({len(compatible)} joints from connection points)',
         'operations': operations,
         'export_formats': ['f3d'],
-        'timestamp': '2025-11-20T01:27:00'
+        'timestamp': '2025-11-20T01:32:00'
     }
     
-    return task
+    return task, compatible
 
 if __name__ == '__main__':
     # Generate assembly
-    task = create_gear_train_assembly()
+    task, compatible = create_gear_train_assembly()
     
     # Save to tasks directory
     task_file = Path('c:/Users/jrdnh/Documents/ai-fusion/shared/tasks/task_gear_train_auto.json')
@@ -64,4 +90,6 @@ if __name__ == '__main__':
     
     print(f"✅ Generated assembly task: {task_file}")
     print(f"   Components: Shaft1, Gear1 (20T), Shaft2, Gear2 (30T)")
-    print(f"   Joints: 2x revolute (gear-to-shaft)")
+    print(f"   Auto-detected {len(compatible)} compatible connections:")
+    for pair in compatible:
+        print(f"     - {pair['component_1']} ↔ {pair['component_2']} ({pair['joint_type']})")
