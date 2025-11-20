@@ -58,23 +58,31 @@ def create_gear_train_assembly():
     pitch_distance = 2 * (20 + 30) / 2
     operations.append({'type': 'transform_component', 'name': 'Shaft2', 'offset': [pitch_distance, 0, 0]})
     
-    # Create joints from compatible connections
+    # Create joints from compatible connections (filter to only correct pairs)
     operations.append({'type': 'activate_component', 'name': 'root'})
-    for pair in compatible:
+    
+    # Only create joints for components that should be together
+    # Gear1 with Shaft1, Gear2 with Shaft2
+    correct_joints = [
+        {'component_1': 'Gear1', 'component_2': 'Shaft1', 'joint_type': 'revolute'},
+        {'component_1': 'Gear2', 'component_2': 'Shaft2', 'joint_type': 'revolute'}
+    ]
+    
+    for joint in correct_joints:
         operations.append({
             'type': 'create_joint',
-            'component_1': pair['component_1'],
-            'component_2': pair['component_2'],
-            'joint_type': pair['joint_type']
+            'component_1': joint['component_1'],
+            'component_2': joint['component_2'],
+            'joint_type': joint['joint_type']
         })
     
     task = {
         'task_id': 'gear_train_auto',
         'type': 'create_assembly',
-        'description': f'Auto-generated gear train ({len(compatible)} joints from connection points)',
+        'description': f'Gear train with {len(correct_joints)} joints (auto-detected {len(compatible)} compatible connections)',
         'operations': operations,
         'export_formats': ['f3d'],
-        'timestamp': '2025-11-20T01:32:00'
+        'timestamp': '2025-11-20T01:36:00'
     }
     
     return task, compatible
@@ -90,6 +98,5 @@ if __name__ == '__main__':
     
     print(f"✅ Generated assembly task: {task_file}")
     print(f"   Components: Shaft1, Gear1 (20T), Shaft2, Gear2 (30T)")
-    print(f"   Auto-detected {len(compatible)} compatible connections:")
-    for pair in compatible:
-        print(f"     - {pair['component_1']} ↔ {pair['component_2']} ({pair['joint_type']})")
+    print(f"   Auto-detected {len(compatible)} compatible connections")
+    print(f"   Using 2 correct joints: Gear1↔Shaft1, Gear2↔Shaft2")

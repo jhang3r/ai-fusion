@@ -1410,6 +1410,8 @@ class TaskProcessor:
     def check_interferences(self):
         """Check for interferences between components"""
         try:
+            self.log("Running interference detection...")
+            
             # Get all bodies from all occurrences
             bodies = adsk.core.ObjectCollection.create()
             
@@ -1417,7 +1419,10 @@ class TaskProcessor:
                 for body in occ.bRepBodies:
                     bodies.add(body)
             
+            self.log(f"Found {bodies.count} bodies to check")
+            
             if bodies.count < 2:
+                self.log("Not enough bodies for interference check")
                 return 0
             
             # Analyze interferences
@@ -1427,6 +1432,8 @@ class TaskProcessor:
             
             if count > 0:
                 self.log(f"⚠️ Found {count} interference(s)!", level='WARNING')
+            else:
+                self.log("✓ No interferences detected")
             
             return count
             
