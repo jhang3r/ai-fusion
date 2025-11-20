@@ -402,6 +402,43 @@ class DesignPrimitives:
                 'distance': 0.5 * detail_scale
             }
         ]
+        
+        # Define connection points
+        mount_offset = width * 0.35  # Distance from center to mounting holes
+        connection_points = [
+            # Four corner mounting holes (M6 threaded)
+            ConnectionPoint(
+                type='threaded_hole',
+                position=[-mount_offset, -mount_offset, 0],
+                properties={'diameter': 6, 'depth': thickness, 'thread_pitch': 1.0}
+            ),
+            ConnectionPoint(
+                type='threaded_hole',
+                position=[mount_offset, -mount_offset, 0],
+                properties={'diameter': 6, 'depth': thickness, 'thread_pitch': 1.0}
+            ),
+            ConnectionPoint(
+                type='threaded_hole',
+                position=[-mount_offset, mount_offset, 0],
+                properties={'diameter': 6, 'depth': thickness, 'thread_pitch': 1.0}
+            ),
+            ConnectionPoint(
+                type='threaded_hole',
+                position=[mount_offset, mount_offset, 0],
+                properties={'diameter': 6, 'depth': thickness, 'thread_pitch': 1.0}
+            ),
+            # Central port (for pipe/conduit connection)
+            ConnectionPoint(
+                type='flat_face',
+                position=[0, 0, thickness],
+                properties={'diameter': min(width, height) * 0.5, 'normal': [0, 0, 1]}
+            )
+        ]
+        
+        return {
+            'operations': operations,
+            'connection_points': connection_points
+        }
 
 
 # Example usage and templates
