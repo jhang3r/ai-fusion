@@ -3,7 +3,35 @@ Design Primitives Library
 Reusable design operation templates for common mechanical components.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Any
+from dataclasses import dataclass, field
+import random
+
+
+@dataclass
+class ConnectionPoint:
+    """Represents a semantic connection point on a component"""
+    type: str  # 'threaded_hole', 'shaft', 'bore', 'mounting_pattern', 'flat_face'
+    position: List[float]  # [x, y, z] in mm
+    properties: Dict[str, Any] = field(default_factory=dict)
+    component_id: str = None
+    id: str = None
+    
+    def __post_init__(self):
+        if self.id is None:
+            self.id = f"{self.type}_{random.randint(1000, 9999)}"
+    
+    def can_mate_with(self, other: 'ConnectionPoint') -> bool:
+        """Check if this connection point can mate with another"""
+        mates = {
+            'threaded_hole': ['bolt', 'screw'],
+            'bolt': ['threaded_hole', 'clearance_hole'],
+            'shaft': ['bore', 'bearing'],
+            'bore': ['shaft'],
+            'mounting_pattern': ['mounting_pattern'],
+            'flat_face': ['flat_face']
+        }
+        return other.type in mates.get(self.type, [])
 
 
 class DesignPrimitives:
