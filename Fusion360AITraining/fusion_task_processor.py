@@ -1315,6 +1315,9 @@ class TaskProcessor:
         occurrence = self.design.rootComponent.occurrences.addNewComponent(transform)
         occurrence.component.name = name
         
+        # Ensure component is visible
+        occurrence.isLightBulbOn = True
+        
         # Set as active component for subsequent operations
         self.root_comp = occurrence.component
         self.log(f"Created component: {name}")
