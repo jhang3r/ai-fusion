@@ -213,6 +213,8 @@ class TaskProcessor:
             self.activate_component(operation)
         elif op_type == 'create_joint':
             self.create_joint(operation)
+        elif op_type == 'transform_component':
+            self.transform_component(operation)
         else:
             raise ValueError(f"Unknown operation type: {op_type}")
     
@@ -1351,7 +1353,7 @@ class TaskProcessor:
         if not occ1 or not occ2:
             raise ValueError(f"Components not found for joint: {comp1_name}, {comp2_name}")
             
-        # Create geometry input (simplified - using origin for now)
+        # Create joint origins at component origins
         geo1 = adsk.fusion.JointGeometry.createByPoint(occ1.component.originConstructionPoint)
         geo2 = adsk.fusion.JointGeometry.createByPoint(occ2.component.originConstructionPoint)
         
@@ -1365,6 +1367,36 @@ class TaskProcessor:
             joint_input.setAsRevoluteJointMotion(adsk.fusion.JointDirections.ZAxisJointDirection)
         elif joint_type == 'slider':
             joint_input.setAsSliderJointMotion(adsk.fusion.JointDirections.ZAxisJointDirection)
-            
+        
+        # Enable snap - this makes components position automatically
+        joint_input.isFlipped = False
+        
         joints.add(joint_input)
         self.log(f"Created {joint_type} joint between {comp1_name} and {comp2_name}")
+    
+    def transform_component(self, operation):
+        """Move/rotate a component"""
+        name = operation.get('name')
+        offset = operation.get('offset', [0, 0, 0])  # [x, y, z] in cm
+        
+        # Find occurrence
+        occ = None
+        for o in self.design.rootComponent.occurrences:
+            if o.component.name == name:
+                occ = o
+                break
+        
+        if not occ:
+            raise ValueError(f"Component not found: {name}")
+        
+        # Create transform matrix
+        transform = adsk.core.Matrix3D.create()
+        transform.translation = adsk.core.Vector3D.create(
+            float(offset[0]) / 10.0,  # Convert mm to cm
+            float(offset[1]) / 10.0,
+            float(offset[2]) / 10.0
+        )
+        
+        # Apply transform
+        occ.transform = transform
+        self.log(f"Transformed {name} by offset {offset}")
