@@ -159,6 +159,12 @@ class TaskProcessor:
             except:
                 pass # Might have been deleted already
             
+            # Check for interferences in assemblies
+            if task.get('type') == 'create_assembly':
+                interference_count = self.check_interferences()
+                if interference_count > 0:
+                    errors.append(f"Found {interference_count} interference(s) between components")
+            
             self.log(f"Task {task_id} completed!")
             
         except Exception as e:
@@ -1400,3 +1406,39 @@ class TaskProcessor:
         # Apply transform
         occ.transform = transform
         self.log(f"Transformed {name} by offset {offset}")
+    
+    def check_interferences(self):
+        """Check for interferences between components"""
+        try:
+            # Get all occurrences
+            occs = self.design.rootComponent.occurrences
+            if occs.count < 2:
+                return 0
+            
+            # Create interference input
+            interference_input = self.design.rootComponent.features.interferenceFeatures.createInput()
+            
+            # Add all occurrences to check
+            for occ in occs:
+                interference_input.targetBodies.add(occ)
+            
+            # Compute interferences
+            interference_results = self.design.rootComponent.features.interferenceFeatures.add(interference_input)
+            
+            # Count interferences
+            count = interference_results.interferenceResults.count
+            
+            if count > 0:
+                self.log(f"⚠️ Found {count} interference(s)!", level='WARNING')
+                for i in range(count):
+                    result = interference_results.interferenceResults.item(i)
+                    self.log(f"  - Interference between components", level='WARNING')
+            
+            # Clean up - delete the interference feature
+            interference_results.deleteMe()
+            
+            return count
+            
+        except Exception as e:
+            self.log(f"Interference check failed: {str(e)}", level='WARNING')
+            return 0
