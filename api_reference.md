@@ -107,7 +107,26 @@ Sets a component as the active target for new operations.
 - `name`: string
 
 ### `create_joint`
-Joins two components together.
+Joins two components together. Components automatically snap to align at their origins.
 - `component_1`: string
 - `component_2`: string
 - `joint_type`: `"rigid"`, `"revolute"`, `"slider"`
+
+### `transform_component`
+Moves a component to a specific position.
+- `name`: string (component name)
+- `offset`: [x, y, z] (mm)
+
+---
+
+## Export Formats
+- `"stl"`: STL mesh file
+- `"step"`: STEP CAD file
+- `"f3d"`: Fusion 360 Archive (preserves full parametric history and assemblies)
+
+---
+
+## Assembly Features
+- **Automatic positioning**: Joints snap components together at their origins
+- **Interference detection**: Automatically checks for overlapping components
+- **Connection points**: Semantic metadata for intelligent assembly (in development)

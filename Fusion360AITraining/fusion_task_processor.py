@@ -1410,32 +1410,23 @@ class TaskProcessor:
     def check_interferences(self):
         """Check for interferences between components"""
         try:
-            # Get all occurrences
-            occs = self.design.rootComponent.occurrences
-            if occs.count < 2:
+            # Get all bodies from all occurrences
+            bodies = adsk.core.ObjectCollection.create()
+            
+            for occ in self.design.rootComponent.occurrences:
+                for body in occ.bRepBodies:
+                    bodies.add(body)
+            
+            if bodies.count < 2:
                 return 0
             
-            # Create interference input
-            interference_input = self.design.rootComponent.features.interferenceFeatures.createInput()
+            # Analyze interferences
+            results = self.design.rootComponent.analyzeInterference(bodies)
             
-            # Add all occurrences to check
-            for occ in occs:
-                interference_input.targetBodies.add(occ)
-            
-            # Compute interferences
-            interference_results = self.design.rootComponent.features.interferenceFeatures.add(interference_input)
-            
-            # Count interferences
-            count = interference_results.interferenceResults.count
+            count = len(results)
             
             if count > 0:
                 self.log(f"⚠️ Found {count} interference(s)!", level='WARNING')
-                for i in range(count):
-                    result = interference_results.interferenceResults.item(i)
-                    self.log(f"  - Interference between components", level='WARNING')
-            
-            # Clean up - delete the interference feature
-            interference_results.deleteMe()
             
             return count
             
