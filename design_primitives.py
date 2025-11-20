@@ -129,7 +129,53 @@ class DesignPrimitives:
                 'depth': 'through'
             })
         
-        return operations
+        connection_points = []
+        if bore_diameter > 0:
+            connection_points.append(
+                ConnectionPoint(
+                    type='bore',
+                    position=[0, 0, thickness/2],
+                    properties={'diameter': bore_diameter, 'depth': thickness}
+                )
+            )
+        
+        return {
+            'operations': operations,
+            'connection_points': connection_points
+        }
+    
+    
+    @staticmethod
+    def shaft(diameter: float, length: float) -> Dict:
+        """Generate operations for a simple shaft"""
+        operations = [
+            {
+                'type': 'sketch',
+                'plane': 'XY',
+                'geometry': 'circle',
+                'params': {
+                    'radius': diameter / 2,
+                    'center': [0, 0]
+                }
+            },
+            {
+                'type': 'extrude',
+                'distance': length
+            }
+        ]
+        
+        connection_points = [
+            ConnectionPoint(
+                type='shaft',
+                position=[0, 0, length/2],
+                properties={'diameter': diameter, 'length': length}
+            )
+        ]
+        
+        return {
+            'operations': operations,
+            'connection_points': connection_points
+        }
     
     @staticmethod
     def hex_bolt(head_width: float, head_height: float, 
